@@ -1,0 +1,776 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-violet: var(--violet);
+  --color-magenta: var(--magenta);
+  --color-cyan-glow: var(--cyan-glow);
+  --color-match: var(--match);
+  --color-review: var(--review);
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+:root {
+  --radius: 0.75rem;
+  --background: #0a0a0f;
+  --foreground: #f5f5f7;
+  --card: #14141f;
+  --card-foreground: #f5f5f7;
+  --popover: #14141f;
+  --popover-foreground: #f5f5f7;
+  --primary: #8b5cf6;
+  --primary-foreground: #ffffff;
+  --secondary: #1a1a26;
+  --secondary-foreground: #f5f5f7;
+  --muted: #1a1a26;
+  --muted-foreground: #a1a1aa;
+  --accent: #1a1a26;
+  --accent-foreground: #f5f5f7;
+  --destructive: #ef4444;
+  --destructive-foreground: #f5f5f7;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: #8b5cf6;
+  --violet: #8b5cf6;
+  --magenta: #d946ef;
+  --cyan-glow: #22d3ee;
+  --match: #34d399;
+  --review: #fbbf24;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+}
+
+/* ============ Background system ============ */
+.tf-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: #0a0a0f;
+}
+.tf-glow-violet {
+  position: absolute;
+  top: -20%;
+  right: -15%;
+  width: 80vw;
+  height: 80vw;
+  max-width: 1400px;
+  max-height: 1400px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(139, 92, 246, 0.55) 0%,
+    rgba(192, 38, 211, 0.35) 35%,
+    rgba(192, 38, 211, 0) 70%
+  );
+  filter: blur(120px);
+  animation: tf-drift-a 9s ease-in-out infinite alternate;
+}
+.tf-glow-cyan {
+  position: absolute;
+  bottom: -15%;
+  left: -10%;
+  width: 55vw;
+  height: 55vw;
+  max-width: 900px;
+  max-height: 900px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.15) 0%, rgba(34, 211, 238, 0) 70%);
+  filter: blur(100px);
+  animation: tf-drift-b 10s ease-in-out infinite alternate;
+}
+.tf-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.35) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.04;
+}
+@keyframes tf-drift-a {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(-30px, 25px);
+  }
+}
+@keyframes tf-drift-b {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(25px, -20px);
+  }
+}
+
+/* ============ Glass panels ============ */
+@utility glass-panel {
+  background: rgba(20, 20, 31, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-radius: 16px;
+}
+@utility glass-chip {
+  background: rgba(20, 20, 31, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-radius: 999px;
+}
+
+/* ============ Text / gradient ============ */
+@utility text-gradient {
+  background: linear-gradient(135deg, #8b5cf6, #d946ef);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ============ Primary gradient button ============ */
+@utility btn-gradient {
+  background: linear-gradient(135deg, #8b5cf6, #d946ef);
+  color: white;
+  border-radius: 12px;
+  font-weight: 600;
+  transition:
+    box-shadow 200ms ease,
+    transform 120ms ease;
+  box-shadow: 0 8px 30px -8px rgba(139, 92, 246, 0.5);
+  &:hover {
+    box-shadow: 0 12px 44px -6px rgba(217, 70, 239, 0.65);
+  }
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+/* Outline gradient button */
+@utility btn-outline-gradient {
+  position: relative;
+  border-radius: 12px;
+  background: rgba(20, 20, 31, 0.6);
+  backdrop-filter: blur(12px);
+  color: #f5f5f7;
+  font-weight: 500;
+  transition:
+    transform 120ms ease,
+    box-shadow 200ms ease;
+  border: 1px solid transparent;
+  background-image:
+    linear-gradient(rgba(20, 20, 31, 0.85), rgba(20, 20, 31, 0.85)),
+    linear-gradient(135deg, #8b5cf6, #d946ef);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  &:hover {
+    box-shadow: 0 8px 24px -8px rgba(139, 92, 246, 0.45);
+  }
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+/* Inputs */
+@utility tf-input {
+  width: 100%;
+  background: rgba(10, 10, 15, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f5f5f7;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-family: var(--font-sans);
+  transition:
+    box-shadow 150ms ease,
+    border-color 150ms ease;
+  &::placeholder {
+    color: #71717a;
+  }
+  &:focus {
+    outline: none;
+    border-color: rgba(139, 92, 246, 0.6);
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.18);
+  }
+}
+
+/* Reveal on scroll */
+.tf-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 600ms ease,
+    transform 600ms ease;
+}
+.tf-reveal.tf-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hero enter */
+@keyframes tf-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.tf-rise {
+  animation: tf-rise 700ms ease-out both;
+}
+
+/* Loading dots */
+@keyframes tf-dot {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.8);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+.tf-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #8b5cf6, #d946ef);
+  display: inline-block;
+  animation: tf-dot 1.2s ease-in-out infinite;
+}
+.tf-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.tf-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes tf-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.tf-fade {
+  animation: tf-fade 400ms ease both;
+}
+
+/* ============ Conic aurora ============ */
+.tf-aurora {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140vmax;
+  height: 140vmax;
+  transform: translate(-50%, -50%);
+  background: conic-gradient(
+    from 0deg,
+    rgba(139, 92, 246, 0) 0deg,
+    rgba(139, 92, 246, 0.18) 60deg,
+    rgba(217, 70, 239, 0.22) 130deg,
+    rgba(34, 211, 238, 0.14) 220deg,
+    rgba(139, 92, 246, 0.18) 300deg,
+    rgba(139, 92, 246, 0) 360deg
+  );
+  filter: blur(90px);
+  opacity: 0.55;
+  animation: tf-spin 40s linear infinite;
+  mix-blend-mode: screen;
+}
+@keyframes tf-spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* ============ Floating orbs ============ */
+.tf-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.tf-orb-a {
+  width: 220px;
+  height: 220px;
+  top: 30%;
+  left: 8%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.7), transparent 70%);
+  animation: tf-float-a 14s ease-in-out infinite alternate;
+}
+.tf-orb-b {
+  width: 160px;
+  height: 160px;
+  top: 65%;
+  right: 12%;
+  background: radial-gradient(circle, rgba(217, 70, 239, 0.55), transparent 70%);
+  animation: tf-float-b 18s ease-in-out infinite alternate;
+}
+.tf-orb-c {
+  width: 130px;
+  height: 130px;
+  top: 15%;
+  left: 55%;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.35), transparent 70%);
+  animation: tf-float-c 22s ease-in-out infinite alternate;
+}
+@keyframes tf-float-a {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(60px, -40px);
+  }
+}
+@keyframes tf-float-b {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(-70px, 50px);
+  }
+}
+@keyframes tf-float-c {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(40px, 60px);
+  }
+}
+
+/* ============ Cursor spotlight ============ */
+.tf-spotlight {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.18), transparent 60%);
+  transform: translate(-50%, -50%);
+  transition: opacity 400ms ease;
+  mix-blend-mode: screen;
+  will-change: left, top;
+}
+
+/* ============ Shimmer headline ============ */
+@keyframes tf-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+.tf-shimmer {
+  background: linear-gradient(
+    90deg,
+    #8b5cf6 0%,
+    #d946ef 25%,
+    #22d3ee 50%,
+    #d946ef 75%,
+    #8b5cf6 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: tf-shimmer 8s linear infinite;
+}
+
+/* ============ Sheen sweep on primary button ============ */
+.tf-sheen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.tf-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  animation: tf-sweep 3.6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes tf-sweep {
+  0%,
+  40% {
+    transform: translateX(-120%);
+  }
+  70%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+/* ============ Tilt cards ============ */
+.tf-tilt {
+  transform-style: preserve-3d;
+  transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.tf-tilt:hover {
+  transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
+}
+
+/* ============ Marquee ============ */
+.tf-marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+}
+.tf-marquee-track {
+  display: inline-flex;
+  gap: 2rem;
+  animation: tf-marquee 30s linear infinite;
+  white-space: nowrap;
+}
+@keyframes tf-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ============ Animated chip border ============ */
+.tf-chip-glow {
+  position: relative;
+}
+.tf-chip-glow::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--a, 0deg),
+    rgba(139, 92, 246, 0.9),
+    rgba(217, 70, 239, 0.9),
+    rgba(34, 211, 238, 0.7),
+    rgba(139, 92, 246, 0.9)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: tf-rotate-a 6s linear infinite;
+  pointer-events: none;
+}
+@property --a {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes tf-rotate-a {
+  to {
+    --a: 360deg;
+  }
+}
+
+/* ============ Signal line under hero ============ */
+.tf-scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(139, 92, 246, 0.6),
+    rgba(217, 70, 239, 0.6),
+    transparent
+  );
+  opacity: 0.6;
+  animation: tf-scan 6s ease-in-out infinite;
+}
+@keyframes tf-scan {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+/* ============ Rising particle field ============ */
+.tf-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.tf-particle {
+  position: absolute;
+  bottom: -10px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(139, 92, 246, 0.6);
+  box-shadow: 0 0 6px rgba(139, 92, 246, 0.6);
+  animation: tf-rise-particle linear infinite;
+  will-change: transform, opacity;
+}
+@keyframes tf-rise-particle {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-110vh) translateX(var(--drift, 0px));
+    opacity: 0;
+  }
+}
+
+/* ============ Breathing gradient border ============ */
+.tf-breathe {
+  position: relative;
+}
+.tf-breathe::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.5),
+    rgba(217, 70, 239, 0.2),
+    rgba(34, 211, 238, 0.3),
+    rgba(139, 92, 246, 0.5)
+  );
+  background-size: 200% 200%;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: tf-breathe-pan 8s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes tf-breathe-pan {
+  0%,
+  100% {
+    background-position: 0% 50%;
+    opacity: 0.7;
+  }
+  50% {
+    background-position: 100% 50%;
+    opacity: 1;
+  }
+}
+
+/* ============ Magnetic lean (JS-driven, --mx/--my set on hover) ============ */
+.tf-magnetic {
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+/* ============ Animated underline draw ============ */
+.tf-underline {
+  position: relative;
+}
+.tf-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, #8b5cf6, #d946ef, #22d3ee);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: tf-underline-draw 1.2s ease-out forwards;
+  animation-delay: var(--ud, 0.6s);
+}
+@keyframes tf-underline-draw {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ============ Glitch text ============ */
+.tf-glitch {
+  position: relative;
+  display: inline-block;
+}
+.tf-glitch::before,
+.tf-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+.tf-glitch:hover::before {
+  color: #d946ef;
+  animation: tf-glitch-a 0.4s steps(2) infinite;
+  clip-path: inset(0 0 60% 0);
+  opacity: 0.9;
+}
+.tf-glitch:hover::after {
+  color: #22d3ee;
+  animation: tf-glitch-b 0.4s steps(2) infinite;
+  clip-path: inset(60% 0 0 0);
+  opacity: 0.9;
+}
+@keyframes tf-glitch-a {
+  0% {
+    transform: translate(0);
+  }
+  25% {
+    transform: translate(-2px, 1px);
+  }
+  50% {
+    transform: translate(2px, -1px);
+  }
+  75% {
+    transform: translate(-1px, 0);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+@keyframes tf-glitch-b {
+  0% {
+    transform: translate(0);
+  }
+  25% {
+    transform: translate(2px, -1px);
+  }
+  50% {
+    transform: translate(-2px, 1px);
+  }
+  75% {
+    transform: translate(1px, 0);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+/* ============ Wavy liquid divider ============ */
+.tf-wave {
+  width: 100%;
+  height: 40px;
+  overflow: hidden;
+  line-height: 0;
+}
+.tf-wave svg {
+  width: 200%;
+  height: 100%;
+  animation: tf-wave-slide 12s linear infinite;
+}
+@keyframes tf-wave-slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tf-glow-violet,
+  .tf-glow-cyan,
+  .tf-aurora,
+  .tf-orb,
+  .tf-scanline,
+  .tf-shimmer,
+  .tf-sheen::after,
+  .tf-chip-glow::before,
+  .tf-marquee-track,
+  .tf-particle,
+  .tf-breathe::before,
+  .tf-wave svg {
+    animation: none !important;
+  }
+  .tf-spotlight {
+    display: none !important;
+  }
+  .tf-rise,
+  .tf-reveal {
+    transition: opacity 200ms ease !important;
+    transform: none !important;
+  }
+  .tf-reveal {
+    opacity: 1 !important;
+  }
+  .tf-dot {
+    animation: tf-fade 1s ease-in-out infinite alternate !important;
+  }
+  .tf-shimmer {
+    background: linear-gradient(135deg, #8b5cf6, #d946ef);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .tf-underline::after {
+    transform: scaleX(1);
+  }
+}
